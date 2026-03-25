@@ -16,6 +16,15 @@ document.addEventListener("DOMContentLoaded", () => {
   let userRole = localStorage.getItem("userRole");
   let userEmail = localStorage.getItem("userEmail");
 
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
   function showMessage(target, text, type) {
     target.textContent = text;
     target.className = type;
@@ -109,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ${details.participants
                   .map(
                     (email) =>
-                      `<li><span class="participant-email">${email}</span><button class="delete-btn" data-activity="${name}" data-email="${email}">❌</button></li>`
+                      `<li><span class="participant-email">${escapeHtml(email)}</span><button class="delete-btn" data-activity="${escapeHtml(name)}" data-email="${escapeHtml(email)}">❌</button></li>`
                   )
                   .join("")}
               </ul>
@@ -119,10 +128,10 @@ document.addEventListener("DOMContentLoaded", () => {
               : "";
 
         activityCard.innerHTML = `
-          <h4>${name}</h4>
-          <p>${details.description}</p>
-          <p><strong>Schedule:</strong> ${details.schedule}</p>
-          <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          <h4>${escapeHtml(name)}</h4>
+          <p>${escapeHtml(details.description)}</p>
+          <p><strong>Schedule:</strong> ${escapeHtml(details.schedule)}</p>
+          <p><strong>Availability:</strong> ${escapeHtml(String(spotsLeft))} spots left</p>
           <div class="participants-container">
             ${participantsHTML}
           </div>
@@ -288,7 +297,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  logoutBtn.addEventListener("click", () => {
+  logoutBtn.addEventListener("click", async () => {
+    try {
+      await fetch("/logout", {
+        method: "POST",
+        headers: authHeaders(),
+      });
+    } catch (_) {
+      // best-effort: continue logout even if network fails or token is already expired
+    }
     clearAuth();
     updateSessionUI();
     activitiesList.innerHTML = "<p>Please login to view activities.</p>";

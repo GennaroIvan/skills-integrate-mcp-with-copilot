@@ -13,6 +13,30 @@
     </header>
 
     <main>
+      <section id="auth-container">
+        <h3>Sign In</h3>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-email">Email:</label>
+            <input type="email" id="login-email" required placeholder="student@mergington.edu" />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password:</label>
+            <input type="password" id="login-password" required placeholder="Enter your password" />
+          </div>
+          <button type="submit">Login</button>
+        </form>
+        <p class="login-help">Demo users: student@mergington.edu / student123, admin@mergington.edu / admin123</p>
+        <div id="auth-message" class="hidden"></div>
+      </section>
+
+      <section id="session-container" class="hidden">
+        <h3>Session</h3>
+        <p id="session-user"></p>
+        <button id="logout-btn" type="button">Logout</button>
+      </section>
+
+      <div id="app-content" class="hidden app-content">
       <section id="activities-container">
         <h3>Available Activities</h3>
         <div id="activities-list">
@@ -25,10 +49,6 @@
         <h3>Sign Up for an Activity</h3>
         <form id="signup-form">
           <div class="form-group">
-            <label for="email">Student Email:</label>
-            <input type="email" id="email" required placeholder="your-email@mergington.edu" />
-          </div>
-          <div class="form-group">
             <label for="activity">Select Activity:</label>
             <select id="activity" required>
               <option value="">-- Select an activity --</option>
@@ -39,6 +59,7 @@
         </form>
         <div id="message" class="hidden"></div>
       </section>
+      </div>
     </main>
 
     <footer>
